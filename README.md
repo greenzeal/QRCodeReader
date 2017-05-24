@@ -2,10 +2,7 @@
 Simple QR code reader for Objective C, Just import one class and implement delegate. If you need you can change Beep.wav also.
 
 
-iOS 10 --->> add key 
-        <key>NSCameraUsageDescription</key>
-        <string>Description why you need access to Camera</string>
-
+iOS 10 --->> add key "NSCameraUsageDescription"
 
 This code was created with help of AppCoda tutorial.
 
