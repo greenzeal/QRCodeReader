@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QRCodeReader.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <QRCodeReaderDelegate>
+
+@property (nonatomic) BOOL isReading;
 
 
 @end

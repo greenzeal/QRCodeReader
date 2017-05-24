@@ -13,6 +13,8 @@
 		DE9DF2AB1ED5780900AA71AE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE9DF2A91ED5780900AA71AE /* Main.storyboard */; };
 		DE9DF2AD1ED5780900AA71AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE9DF2AC1ED5780900AA71AE /* Assets.xcassets */; };
 		DE9DF2B01ED5780900AA71AE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE9DF2AE1ED5780900AA71AE /* LaunchScreen.storyboard */; };
+		DE9DF2B81ED57B6500AA71AE /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = DE9DF2B71ED57B6500AA71AE /* beep.wav */; };
+		DE9DF2BC1ED57E6100AA71AE /* QRCodeReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DF2BB1ED57E6100AA71AE /* QRCodeReader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,9 @@
 		DE9DF2AC1ED5780900AA71AE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE9DF2AF1ED5780900AA71AE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE9DF2B11ED5780900AA71AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE9DF2B71ED57B6500AA71AE /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
+		DE9DF2BA1ED57E6100AA71AE /* QRCodeReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeReader.h; sourceTree = "<group>"; };
+		DE9DF2BB1ED57E6100AA71AE /* QRCodeReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeReader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +63,12 @@
 		DE9DF29F1ED5780900AA71AE /* QRReader */ = {
 			isa = PBXGroup;
 			children = (
+				DE9DF2B91ED57E3C00AA71AE /* QRReader */,
 				DE9DF2A31ED5780900AA71AE /* AppDelegate.h */,
 				DE9DF2A41ED5780900AA71AE /* AppDelegate.m */,
 				DE9DF2A61ED5780900AA71AE /* ViewController.h */,
 				DE9DF2A71ED5780900AA71AE /* ViewController.m */,
+				DE9DF2B71ED57B6500AA71AE /* beep.wav */,
 				DE9DF2A91ED5780900AA71AE /* Main.storyboard */,
 				DE9DF2AC1ED5780900AA71AE /* Assets.xcassets */,
 				DE9DF2AE1ED5780900AA71AE /* LaunchScreen.storyboard */,
@@ -77,6 +84,15 @@
 				DE9DF2A11ED5780900AA71AE /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DE9DF2B91ED57E3C00AA71AE /* QRReader */ = {
+			isa = PBXGroup;
+			children = (
+				DE9DF2BA1ED57E6100AA71AE /* QRCodeReader.h */,
+				DE9DF2BB1ED57E6100AA71AE /* QRCodeReader.m */,
+			);
+			name = QRReader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -110,6 +126,7 @@
 				TargetAttributes = {
 					DE9DF29C1ED5780900AA71AE = {
 						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = VAHF8B7274;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -137,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE9DF2B81ED57B6500AA71AE /* beep.wav in Resources */,
 				DE9DF2B01ED5780900AA71AE /* LaunchScreen.storyboard in Resources */,
 				DE9DF2AD1ED5780900AA71AE /* Assets.xcassets in Resources */,
 				DE9DF2AB1ED5780900AA71AE /* Main.storyboard in Resources */,
@@ -152,6 +170,7 @@
 			files = (
 				DE9DF2A81ED5780900AA71AE /* ViewController.m in Sources */,
 				DE9DF2A51ED5780900AA71AE /* AppDelegate.m in Sources */,
+				DE9DF2BC1ED57E6100AA71AE /* QRCodeReader.m in Sources */,
 				DE9DF2A21ED5780900AA71AE /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,6 +293,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = VAHF8B7274;
 				INFOPLIST_FILE = QRReader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qrreader.QRReader;
@@ -285,6 +305,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = VAHF8B7274;
 				INFOPLIST_FILE = QRReader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qrreader.QRReader;
