@@ -15,7 +15,10 @@
 
 @optional
 - (void)QRCodeReadingStatus:(BOOL)isReading;
+- (void)QRCodeReadingFailed:(NSError *)error;
 - (void)QRCodeReadResult:(NSString *)resultString;
+- (void)QRCodePermission:(BOOL)granted;
+
 
 @end
 
@@ -25,7 +28,7 @@
 @property (weak, nonatomic) id <QRCodeReaderDelegate> delegate;
 @property (nonatomic) BOOL isReading;
 
-- (BOOL)startReadingInsideView:(UIView *)view;
+- (void)startReadingInsideView:(UIView *)view;
 - (void)stopReading;
 
 @property (nonatomic, strong) AVCaptureSession *captureSession;

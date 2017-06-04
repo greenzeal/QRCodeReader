@@ -11,8 +11,5 @@
 
 @interface ViewController : UIViewController <QRCodeReaderDelegate>
 
-@property (nonatomic) BOOL isReading;
-
-
 @end
 

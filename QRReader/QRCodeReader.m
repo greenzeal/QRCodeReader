@@ -23,8 +23,6 @@
     if ((self = [super init])) {
     //Init values
         _captureSession = nil;
-//        _isReading = NO;
-        
         [self loadBeepSound];
     
     }
@@ -32,36 +30,57 @@
     return self;
 }
 
-//- (IBAction)startStopReading:(id)sender{
-//    if (!_isReading) {
-//        if ([self startReading]) {
-//            
-//            if([delegate respondsToSelector:@selector(QRCodeReadingStatus:)]){
-//                [delegate QRCodeReadingStatus:YES];
-//            }
-//
-//        }
-//    }
-//    else{
-//        [self stopReading];
-//        if([delegate respondsToSelector:@selector(QRCodeReadingStatus:)]){
-//            [delegate QRCodeReadingStatus:NO];
-//        }
-//    }
-//    
-//    _isReading = !_isReading;
-//}
 
-- (BOOL)startReadingInsideView:(UIView *)view{
+- (void)startReadingInsideView:(UIView *)view{
+    
+    
+    [self checkPermission:^(BOOL granted) {
+       
+        if(granted){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+           
+                if([delegate respondsToSelector:@selector(QRCodePermission:)]){
+                        [delegate QRCodePermission:YES];
+                    }
+            
+            [self startReading:view];
+         });
+            
+        } else {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if([delegate respondsToSelector:@selector(QRCodePermission:)]){
+                    [delegate QRCodePermission:NO];
+                }
+            });
+            
+        }
+        
+    }];
+    
+    
+  
+    
+    
+}
+
+- (void)startReading:(UIView *)view{
+    
     NSError *error;
     
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
     if (!input) {
-        NSLog(@"%@", [error localizedDescription]);
-        return NO;
+        
+        if([delegate respondsToSelector:@selector(QRCodeReadingFailed:)]){
+            [delegate QRCodeReadingFailed:error];
+        }
+        return;
     }
+
+    
     
     _captureSession = [[AVCaptureSession alloc] init];
     [_captureSession addInput:input];
@@ -81,8 +100,12 @@
     
     [_captureSession startRunning];
     
-    return YES;
+    if([delegate respondsToSelector:@selector(QRCodeReadingStatus:)]){
+        [delegate QRCodeReadingStatus:YES];
+    }
+    
 }
+
 
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
     if (metadataObjects != nil && [metadataObjects count] > 0) {
@@ -111,6 +134,10 @@
     _captureSession = nil;
     
     [_videoPreviewLayer removeFromSuperlayer];
+    
+    if([delegate respondsToSelector:@selector(QRCodeReadingStatus:)]){
+        [delegate QRCodeReadingStatus:NO];
+    }
 }
 
 
@@ -127,6 +154,23 @@
     else{
         [_audioPlayer prepareToPlay];
     }
+}
+
+- (void)checkPermission:(void (^)(BOOL granted))completion{
+    
+    if ([AVCaptureDevice respondsToSelector:@selector(requestAccessForMediaType: completionHandler:)]) {
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            // Will get here on both iOS 7 & 8 even though camera permissions weren't required
+            // until iOS 8. So for iOS 7 permission will always be granted.
+            // Permission received. Use dispatch_async for any UI updating
+            // code because this block may be executed in a thread.
+            completion(granted);
+            
+        }];
+    } else {
+            completion(YES);
+    }
+
 }
 
 @end

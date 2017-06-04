@@ -25,7 +25,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _isReading = NO;
     
     self.qrReader = [[QRCodeReader alloc] init];
     self.qrReader.delegate = self;
@@ -37,30 +36,82 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Actions
+
 - (IBAction)startStopReading:(id)sender{
-    if (!_isReading) {
-        if ([self.qrReader startReadingInsideView:_viewPreview]) {
-            
-            [_startScanButton setTitle:@"Stop" forState:UIControlStateNormal];
-            [_lblStatus setText:@"Scanning for QR Code..."];
-        }
-    }
-    else{
+    if([_startScanButton.titleLabel.text isEqualToString:@"Stop"]){
         [self.qrReader stopReading];
-        [_startScanButton setTitle:@"Start!" forState:UIControlStateNormal];
+    }else{
+        [self.qrReader startReadingInsideView:_viewPreview];
     }
     
-    _isReading = !_isReading;
+    
 }
 
 #pragma mark - QRCodeReader delegates
+- (void)QRCodeReadingStatus:(BOOL)isReading{
+    if(isReading){
+        [_startScanButton setTitle:@"Stop" forState:UIControlStateNormal];
+        [_lblStatus setText:@"Scanning for QR Code..."];
+    }else{
+        [_startScanButton setTitle:@"Start reading" forState:UIControlStateNormal];
+        [_lblStatus setText:@""];
+    }
+    
+    
+}
+
+
+- (void)QRCodePermission:(BOOL)granted{
+  
+    if(!granted){
+        //We don't have access to camere, let's ask again
+        NSLog(@"%@", @"Denied camera access");
+        
+        NSString *alertText;
+        NSString *alertButton;
+
+        BOOL canOpenSettings = (UIApplicationOpenSettingsURLString != nil);
+        if (canOpenSettings)
+        {
+            alertText = @"It looks like your privacy settings are preventing us from accessing your camera to do barcode scanning. You can fix this by doing the following:\n\n1. Touch the Go button below to open the Settings app.\n\n2. Touch Privacy.\n\n3. Turn the Camera on.\n\n4. Open this app and try again.";
+            
+            alertButton = @"Go";
+        }
+        else
+        {
+            alertText = @"It looks like your privacy settings are preventing us from accessing your camera to do barcode scanning. You can fix this by doing the following:\n\n1. Close this app.\n\n2. Open the Settings app.\n\n3. Scroll to the bottom and select this app in the list.\n\n4. Touch Privacy.\n\n5. Turn the Camera on.\n\n6. Open this app and try again.";
+            
+            alertButton = @"OK";
+        }
+    
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Camera Permission Denided" message:alertText preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* ok = [UIAlertAction actionWithTitle:alertButton style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            if (canOpenSettings){
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:nil];
+            }
+            
+        }];
+        [alertController addAction:ok];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+
+    
+    
+    } else {
+       
+        NSLog(@"COOL EVERYTHING IS OK, LET'S SCAN!");
+        
+    }
+
+}
+
+
 - (void)QRCodeReadResult:(NSString *)resultString{
     
     dispatch_async(dispatch_get_main_queue(), ^{
         self.lblStatus.text = resultString;
-        _isReading = NO;
-        
-    
     });
 }
 
